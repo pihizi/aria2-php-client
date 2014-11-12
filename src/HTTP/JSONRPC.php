@@ -41,7 +41,7 @@ class JSONRPC implements \Aria2Client\Aria2Interface
         $iData = [
             'jsonrpc'=> '2.0',
             'id'=> base_convert($this->_uniqid ++, 10, 36),
-            'method'=> "aria2.{$name}",
+            'method'=> "aria2.{$method}",
             'params'=> $data
         ];
 
