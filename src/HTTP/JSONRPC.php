@@ -23,9 +23,7 @@ class JSONRPC implements \Aria2Client\Aria2Interface
             CURLOPT_CONNECTTIMEOUT=> $iTimeout,
             CURLOPT_TIMEOUT=> $iTimeout,
             CURLOPT_RETURNTRANSFER=> true,
-            CURLOPT_HTTPHEADER => array(
-                'Content-Type' => 'application/json'
-            ),
+            CURLOPT_HEADER => false,
             CURLOPT_POST=> true
         ]);
     }
@@ -37,7 +35,7 @@ class JSONRPC implements \Aria2Client\Aria2Interface
 
     private function _request($method, array $data=[])
     {
-        if ($this->_token) array_unshift($data, $this->_token);
+        if ($this->_token) array_unshift($data, "token::{$this->_token}");
         $iData = [
             'jsonrpc'=> '2.0',
             'id'=> base_convert($this->_uniqid ++, 10, 36),
@@ -52,6 +50,8 @@ class JSONRPC implements \Aria2Client\Aria2Interface
 
         $iResult = json_decode($iResult, 1);
 
+        var_dump($iResult, $iError);
+
         return $iResult['result'];
     }
 
@@ -59,8 +59,6 @@ class JSONRPC implements \Aria2Client\Aria2Interface
     {
         $keys = ['gid', 'files'];
         $iActives = (array) $this->_request('tellActive', [$keys]);
-        $iWaitings = (array) $this->_request('tellWaiting', [0, -1, $keys]);
-        $iStops = (array) $this->_request('tellStopped', [0, -1, $keys]);
 
         $iGetUris = function(array $items=[]) {
             $tResult = [];
@@ -75,28 +73,29 @@ class JSONRPC implements \Aria2Client\Aria2Interface
             return $tResult;
         };
 
-        return [$iGetUris($iActives), $iGetUris($iWaitings), $iGetUris($iStops)];
+        return $iGetUris($iActives);
+
     }
 
     public function addURL($url, $file=null)
     {
-        list($iActives, $iWaitings) = $this->_getDownloadingUris();
-
-
+        $iActives = $this->_getDownloadingUris();
         if (
-            !empty($iActives) && !empty($iWaitings) 
+            !empty($iActives)
             && (
-                (!$file && (isset($iActives[$url]) || isset($iWaitings[$url])))
+                (!$file && isset($iActives[$url]))
                 ||
-                ($file && ($iActives[$url]===$file || $iWaitings[$url]===$file))
+                ($file && $iActives[$url]===$file)
             )
         ) {
             return true;
         }
 
         $iOptions = [
-            'auto-file-naming'=> false
+            'auto-file-renaming'=> 'false'
         ];
+
+        var_dump($file.'sdfasdf');
 
         if ($file) {
             $iOptions['out'] = $file;
