@@ -35,7 +35,7 @@ class JSONRPC implements \Aria2Client\Aria2Interface
         curl_close($this->_ch);
     }
 
-    private function _requset($method, array $data=[])
+    private function _request($method, array $data=[])
     {
         if ($this->_token) array_unshift($data, $this->_token);
         $iData = [
