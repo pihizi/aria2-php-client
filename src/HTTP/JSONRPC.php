@@ -50,8 +50,6 @@ class JSONRPC implements \Aria2Client\Aria2Interface
 
         $iResult = json_decode($iResult, 1);
 
-        var_dump($iResult, $iError);
-
         return $iResult['result'];
     }
 
@@ -94,8 +92,6 @@ class JSONRPC implements \Aria2Client\Aria2Interface
         $iOptions = [
             'auto-file-renaming'=> 'false'
         ];
-
-        var_dump($file.'sdfasdf');
 
         if ($file) {
             $iOptions['out'] = $file;
