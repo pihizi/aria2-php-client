@@ -1,0 +1,25 @@
+{
+    "name": "pihizi/aria2-php-client",
+    "type": "library",
+    "description": "PHP library to download with aria2",
+    "keywords": ["download", "aria2"],
+    "homepage": "https://github.com/pihizi/aria2-php-client",
+    "license": "MIT",
+
+    "authors": [
+        {
+            "name": "PiHiZi",
+            "email": "pihizi@msn.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.4.0"
+    },
+    "require-dev": {
+    },
+    "autoload": {
+        "psr-0": {
+            "Aria2Client\\": "src/"
+        }
+    }
+}
