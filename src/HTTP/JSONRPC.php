@@ -2,7 +2,7 @@
 
 namespace Aria2Client\HTTP;
 
-class JSONRPC interface \Aria2Client\Aria2Interface
+class JSONRPC implements \Aria2Client\Aria2Interface
 {
 
     private $_server;
