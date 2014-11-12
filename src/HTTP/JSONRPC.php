@@ -82,10 +82,14 @@ class JSONRPC implements \Aria2Client\Aria2Interface
     {
         list($iActives, $iWaitings) = $this->_getDownloadingUris();
 
+
         if (
-            (!$file && (isset($iActives[$url]) || isset($iWaitings[$url])))
-            ||
-            ($file && ($iActives[$url]===$file || $iWaitings[$url]===$file))
+            !empty($iActives) && !empty($iWaitings) 
+            && (
+                (!$file && (isset($iActives[$url]) || isset($iWaitings[$url])))
+                ||
+                ($file && ($iActives[$url]===$file || $iWaitings[$url]===$file))
+            )
         ) {
             return true;
         }
@@ -102,7 +106,7 @@ class JSONRPC implements \Aria2Client\Aria2Interface
             $iOptions['http-proxy'] = $this->_proxy;
         }
 
-        $iResult = $this->_requset('addUri', [[$url], $iOptions]);
+        $iResult = $this->_request('addUri', [[$url], $iOptions]);
         if (!$iResult) return false;
 
         return true;
