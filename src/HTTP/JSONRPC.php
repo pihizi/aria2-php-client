@@ -90,6 +90,7 @@ class JSONRPC implements \Aria2Client\Aria2Interface
         }
 
         $iOptions = [
+            'allow-overwrite'=> 'true',
             'auto-file-renaming'=> 'false'
         ];
 
